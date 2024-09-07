@@ -10,7 +10,7 @@ type NoteProps = {
   _id: string;
   title: string;
   description: string;
-  tag: "Home" | "Business" | "Personal";
+  tag: string;
   createdAt: string;
 };
 

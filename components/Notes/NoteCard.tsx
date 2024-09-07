@@ -12,6 +12,8 @@ export type NoteProps = {
   createdAt: string;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
 const NoteCard = ({ note, fetchAllNotes }: { note: NoteProps; fetchAllNotes: () => void }) => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
@@ -28,7 +30,7 @@ const NoteCard = ({ note, fetchAllNotes }: { note: NoteProps; fetchAllNotes: () 
 
   const deleteNote = async () => {    
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/notes/${note._id}`);
+      await axios.delete(`${BASE_URL}/api/notes/${note._id}`);
       fetchAllNotes();
       setShowDeletePopup(false);
     } catch (error) {

@@ -4,7 +4,10 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules } from "@/lib/utils";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 const NoteForm = ({
   setShowPopup,
@@ -13,17 +16,20 @@ const NoteForm = ({
   fetchAllNotes: () => void;
   setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+
   const [title, setTitle] = useState("");
   const [tag, setTag] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const addNotes = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (title && tag && description) {
       try {
+        setIsLoading(true);
         const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/notes/`,
+          `${BASE_URL}/api/notes/`,
           {
             title,
             tag,
@@ -32,12 +38,13 @@ const NoteForm = ({
         );
         setShowPopup(false);
         fetchAllNotes();
+        setIsLoading(false);
       } catch (error) {
         console.error("Error adding note: ", error);
       }
     }
   };
-
+ 
   return (
     <section className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white py-6 px-4 rounded-md w-[90%] mx-auto sm:w-full max-w-lg max-h-[90vh] overflow-y-scroll hide-scrollbar">
@@ -92,10 +99,10 @@ const NoteForm = ({
             />
           </div>
           <button
-            className="bg-green-600 font-bold w-full px-4 py-2 rounded-md"
+            className="bg-green-600 font-bold w-full px-4 py-2 rounded-md flex items-center justify-center"
             type="submit"
           >
-            Submit
+            {isLoading? <AiOutlineLoading3Quarters size={20} /> : "Submit"}
           </button>
         </form>
       </div>

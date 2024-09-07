@@ -12,6 +12,7 @@ type Props = {
   note: NoteProps;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 
 const UpdateNote = ({ setShowUpdateForm, fetchAllNotes, note }: Props) => {
@@ -29,7 +30,7 @@ const UpdateNote = ({ setShowUpdateForm, fetchAllNotes, note }: Props) => {
     };
 
     try {
-      await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/notes/${note._id}`, updatedForm);
+      await axios.patch(`${BASE_URL}/api/notes/${note._id}`, updatedForm);
       fetchAllNotes();
       setShowUpdateForm(false);
     } catch (error) {
